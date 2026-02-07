@@ -2,13 +2,14 @@ const nodemailer = require('nodemailer');
 const formidable = require('formidable');
 const fs = require('fs');
 
-export const config = {
+// Configure Vercel API behavior (disable built-in body parsing for formidable)
+module.exports.config = {
     api: {
         bodyParser: false,
     },
 };
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }

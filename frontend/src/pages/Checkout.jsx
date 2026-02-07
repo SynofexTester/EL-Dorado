@@ -45,7 +45,16 @@ const Checkout = () => {
                 body: formDataToSend,
             });
 
-            const result = await response.json();
+            let result;
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                result = await response.json();
+            } else {
+                // If response is not JSON (e.g., 500 error page), read as text
+                const text = await response.text();
+                console.error("Server API Error:", text);
+                throw new Error("Server error. Please check your internet or try again later.");
+            }
 
             if (response.ok) {
                 toast.dismiss(loadingToast);
