@@ -4,12 +4,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Badge } from '../components/ui/badge';
-import { 
-  TrendingUp, 
-  Shield, 
-  Zap, 
-  BarChart3, 
-  Download, 
+import {
+  TrendingUp,
+  Shield,
+  Zap,
+  BarChart3,
+  Download,
   CheckCircle2,
   Mail,
   User,
@@ -37,13 +37,21 @@ const Home = () => {
     const submissions = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
     submissions.push({ ...contactForm, timestamp: new Date().toISOString() });
     localStorage.setItem('contactSubmissions', JSON.stringify(submissions));
-    
+
     toast.success('Message sent successfully! We\'ll get back to you soon.');
     setContactForm({ name: '', email: '', message: '' });
   };
 
   const handleDemoDownload = () => {
-    toast.success('Demo version download will start shortly!');
+    // Create a link and trigger download
+    const link = document.createElement('a');
+    link.href = '/downloads/EL-Dorado-v1.5-MT4-EA-tnwmxk.zip';
+    link.download = 'EL-Dorado-v1.5-MT4-EA.zip';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    toast.success('Download started! Check your downloads folder.');
   };
 
   const scrollToSection = (id) => {
@@ -75,8 +83,8 @@ const Home = () => {
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1614028674026-a65e31bfd27c" 
+          <img
+            src="https://images.unsplash.com/photo-1614028674026-a65e31bfd27c"
             alt="Trading Background"
             className="w-full h-full object-cover opacity-20"
           />
@@ -93,13 +101,13 @@ const Home = () => {
               <Star className="w-4 h-4 mr-2 inline" />
               MetaTrader 4 Expert Advisor
             </Badge>
-            
+
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 bg-clip-text text-transparent leading-tight">
               EL DORADO MT4 EA
             </h1>
-            
+
             <p className="text-xl md:text-2xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Professional Grid Trading System with RSI & MA Filters. 
+              Professional Grid Trading System with RSI & MA Filters.
               Automated Forex Trading for XAUUSD, EURUSD, GBPUSD & Major Pairs.
             </p>
 
@@ -119,19 +127,19 @@ const Home = () => {
             </div>
 
             <div className="flex flex-wrap justify-center gap-4">
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 onClick={() => scrollToSection('pricing')}
                 className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-lg px-8 py-6 shadow-lg shadow-amber-500/30 hover:shadow-amber-500/50 transition-all"
               >
                 <Crown className="w-5 h-5 mr-2" />
                 Get Lifetime Access - $200
               </Button>
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 variant="outline"
                 onClick={handleDemoDownload}
-                className="border-amber-500/50 text-amber-400 hover:bg-amber-500/10 font-semibold text-lg px-8 py-6"
+                className="border-amber-500/50 text-amber-400 hover:bg-amber-500/10 hover:text-amber-400 font-semibold text-lg px-8 py-6"
               >
                 <Download className="w-5 h-5 mr-2" />
                 Download Demo
@@ -256,13 +264,13 @@ const Home = () => {
       {/* Performance Section */}
       <section id="performance" className="py-24 bg-slate-900/30 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <img 
-            src="https://images.unsplash.com/photo-1651341050677-24dba59ce0fd" 
+          <img
+            src="https://images.unsplash.com/photo-1651341050677-24dba59ce0fd"
             alt="Performance"
             className="w-full h-full object-cover"
           />
         </div>
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
             <Badge className="mb-4 bg-amber-500/20 text-amber-400 border-amber-500/30">
@@ -431,8 +439,8 @@ const Home = () => {
                     <span className="text-slate-500">No user guide</span>
                   </li>
                 </ul>
-                <Button 
-                  className="w-full border-amber-500/50 text-amber-400 hover:bg-amber-500/10"
+                <Button
+                  className="w-full border-amber-500/50 text-amber-400 hover:bg-amber-500/10 hover:text-amber-400"
                   variant="outline"
                   onClick={handleDemoDownload}
                 >
@@ -487,7 +495,7 @@ const Home = () => {
                     <span className="text-white">Priority customer support</span>
                   </li>
                 </ul>
-                <Button 
+                <Button
                   className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold shadow-lg shadow-amber-500/30"
                   onClick={() => scrollToSection('contact')}
                 >
@@ -525,11 +533,11 @@ const Home = () => {
                       <User className="w-4 h-4 text-amber-400" />
                       Your Name
                     </label>
-                    <Input 
+                    <Input
                       type="text"
                       placeholder="John Doe"
                       value={contactForm.name}
-                      onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
+                      onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
                       required
                       className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-500 focus:border-amber-500"
                     />
@@ -540,11 +548,11 @@ const Home = () => {
                       <Mail className="w-4 h-4 text-amber-400" />
                       Email Address
                     </label>
-                    <Input 
+                    <Input
                       type="email"
                       placeholder="john@example.com"
                       value={contactForm.email}
-                      onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
+                      onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
                       required
                       className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-500 focus:border-amber-500"
                     />
@@ -555,17 +563,17 @@ const Home = () => {
                       <MessageSquare className="w-4 h-4 text-amber-400" />
                       Message
                     </label>
-                    <Textarea 
+                    <Textarea
                       placeholder="Tell us about your trading needs..."
                       value={contactForm.message}
-                      onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
+                      onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
                       required
                       rows={5}
                       className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-500 focus:border-amber-500"
                     />
                   </div>
 
-                  <Button 
+                  <Button
                     type="submit"
                     className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold"
                   >
@@ -590,7 +598,7 @@ const Home = () => {
                 <p className="text-sm text-slate-400">MT4 Expert Advisor</p>
               </div>
             </div>
-            
+
             <div className="text-center md:text-right">
               <p className="text-slate-400">© 2024 EL DORADO. All rights reserved.</p>
               <p className="text-sm text-slate-500 mt-1">
