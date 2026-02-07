@@ -34,7 +34,7 @@ const Checkout = () => {
         // Logic to send data to backend would go here
         toast.success("Payment proof submitted! We will verify and send your license shortly.");
         // Reset or redirect
-        setTimeout(() => navigate('/'), 3000);
+        setTimeout(() => navigate('/thank-you'), 1500);
     };
 
     const getWalletAddress = (currency) => {
