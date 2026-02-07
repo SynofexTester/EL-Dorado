@@ -5,7 +5,7 @@ import { Badge } from '../components/ui/badge';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { ArrowLeft, Wallet, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Wallet, CheckCircle2, Upload } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
@@ -17,6 +17,25 @@ const Checkout = () => {
         currency: ''
     });
     const [showAddress, setShowAddress] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const handleFileChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            setSelectedFile(e.target.files[0]);
+        }
+    };
+
+    const handleSubmitPayment = () => {
+        if (!selectedFile) {
+            toast.error("Please upload the payment screenshot");
+            return;
+        }
+
+        // Logic to send data to backend would go here
+        toast.success("Payment proof submitted! We will verify and send your license shortly.");
+        // Reset or redirect
+        setTimeout(() => navigate('/'), 3000);
+    };
 
     const getWalletAddress = (currency) => {
         switch (currency) {
@@ -146,17 +165,49 @@ const Checkout = () => {
                                         </div>
                                     </div>
 
-                                    <div className="text-center text-sm text-slate-400">
-                                        After payment, please send the transaction hash to support@example.com for activation.
+                                    <div className="space-y-2">
+                                        <Label className="text-slate-200">Upload Payment Screenshot</Label>
+                                        <div className="flex items-center justify-center w-full">
+                                            <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-700 border-dashed rounded-lg cursor-pointer bg-slate-900 hover:bg-slate-800 hover:border-amber-500/50 transition-all">
+                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                    <Upload className="w-8 h-8 mb-3 text-slate-400" />
+                                                    <p className="text-sm text-slate-400">
+                                                        {selectedFile ? (
+                                                            <span className="text-amber-400 font-medium">{selectedFile.name}</span>
+                                                        ) : (
+                                                            <>
+                                                                <span className="font-semibold">Click to upload</span> or drag and drop
+                                                            </>
+                                                        )}
+                                                    </p>
+                                                    <p className="text-xs text-slate-500 mt-1">PNG, JPG or PDF</p>
+                                                </div>
+                                                <input id="dropzone-file" type="file" className="hidden" onChange={handleFileChange} accept="image/*,.pdf" />
+                                            </label>
+                                        </div>
                                     </div>
 
-                                    <Button
-                                        variant="outline"
-                                        className="w-full border-slate-700 text-slate-400 hover:text-white hover:bg-slate-800"
-                                        onClick={() => setShowAddress(false)}
-                                    >
-                                        Back to details
-                                    </Button>
+                                    <div className="text-center text-sm text-slate-400">
+                                        Please upload the screenshot of your transaction for verification.
+                                    </div>
+
+                                    <div className="flex gap-3">
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            className="flex-1 border-slate-700 text-slate-400 hover:text-white hover:bg-slate-800"
+                                            onClick={() => setShowAddress(false)}
+                                        >
+                                            Back
+                                        </Button>
+                                        <Button
+                                            type="button"
+                                            className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold"
+                                            onClick={handleSubmitPayment}
+                                        >
+                                            Submit Payment
+                                        </Button>
+                                    </div>
                                 </div>
                             )}
                         </form>
