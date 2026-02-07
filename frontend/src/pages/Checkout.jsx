@@ -62,8 +62,7 @@ const Checkout = () => {
         // For now, showcase the selection
         toast.success(`Proceeding to pay with ${formData.currency}`);
 
-        // Here you would typically redirect to a specific wallet address page 
-        // or show a QR code modal based on the selected currency
+        setShowAddress(true);
     };
 
     return (
