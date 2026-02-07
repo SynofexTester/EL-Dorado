@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { CheckCircle2, Shield, CreditCard, ArrowLeft } from 'lucide-react';
+import { CheckCircle2, Shield, Wallet, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Buy = () => {
@@ -51,9 +51,12 @@ const Buy = () => {
                             </div>
                         </div>
 
-                        <Button className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-6 text-lg">
-                            <CreditCard className="w-5 h-5 mr-2" />
-                            Pay with Card
+                        <Button
+                            className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-6 text-lg"
+                            onClick={() => navigate('/checkout')}
+                        >
+                            <Wallet className="w-5 h-5 mr-2" />
+                            Pay with Crypto
                         </Button>
 
                         <p className="text-center text-xs text-slate-500">
