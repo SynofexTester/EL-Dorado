@@ -33,15 +33,42 @@ const Home = () => {
     message: ''
   });
 
-  const handleContactSubmit = (e) => {
+  const handleContactSubmit = async (e) => {
     e.preventDefault();
-    // Mock form submission - saves to browser storage
-    const submissions = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
-    submissions.push({ ...contactForm, timestamp: new Date().toISOString() });
-    localStorage.setItem('contactSubmissions', JSON.stringify(submissions));
+    const loadingToast = toast.loading("Sending your message...");
 
-    toast.success('Message sent successfully! We\'ll get back to you soon.');
-    setContactForm({ name: '', email: '', message: '' });
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(contactForm),
+      });
+
+      let result;
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        result = await response.json();
+      } else {
+        const text = await response.text();
+        console.error("Server API Error:", text);
+        throw new Error("Server error. Please try again later.");
+      }
+
+      if (response.ok) {
+        toast.dismiss(loadingToast);
+        toast.success('Message sent successfully! We\'ll get back to you soon.');
+        setContactForm({ name: '', email: '', message: '' });
+      } else {
+        const errorMessage = result.details ? `${result.error}: ${result.details}` : (result.error || 'Failed to send message');
+        throw new Error(errorMessage);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.dismiss(loadingToast);
+      toast.error(error.message || "Failed to send message. Please try again.");
+    }
   };
 
   const handleDemoDownload = () => {
