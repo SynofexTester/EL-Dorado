@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Input } from '../components/ui/input';
@@ -25,6 +26,7 @@ import {
 import { toast } from 'sonner';
 
 const Home = () => {
+  const navigate = useNavigate();
   const [contactForm, setContactForm] = useState({
     name: '',
     email: '',

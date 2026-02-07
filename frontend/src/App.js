@@ -1,6 +1,7 @@
 import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "@/pages/Home";
+import Buy from "@/pages/Buy";
 import { Toaster } from "@/components/ui/sonner";
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/buy" element={<Buy />} />
         </Routes>
       </BrowserRouter>
       <Toaster />
