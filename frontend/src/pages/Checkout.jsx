@@ -25,16 +25,40 @@ const Checkout = () => {
         }
     };
 
-    const handleSubmitPayment = () => {
+    const handleSubmitPayment = async () => {
         if (!selectedFile) {
             toast.error("Please upload the payment screenshot");
             return;
         }
 
-        // Logic to send data to backend would go here
-        toast.success("Payment proof submitted! We will verify and send your license shortly.");
-        // Reset or redirect
-        setTimeout(() => navigate('/thank-you'), 1500);
+        const loadingToast = toast.loading("Submitting your order...");
+
+        try {
+            const formDataToSend = new FormData();
+            formDataToSend.append('name', formData.name);
+            formDataToSend.append('email', formData.email);
+            formDataToSend.append('currency', formData.currency);
+            formDataToSend.append('proof', selectedFile);
+
+            const response = await fetch('/api/send-email', {
+                method: 'POST',
+                body: formDataToSend,
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                toast.dismiss(loadingToast);
+                toast.success("Order submitted successfully! Check your email.");
+                setTimeout(() => navigate('/thank-you'), 1500);
+            } else {
+                throw new Error(result.error || 'Failed to submit order');
+            }
+        } catch (error) {
+            console.error(error);
+            toast.dismiss(loadingToast);
+            toast.error(error.message || "Failed to submit. Please try again or contact support.");
+        }
     };
 
     const getWalletAddress = (currency) => {
