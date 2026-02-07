@@ -61,7 +61,9 @@ const Checkout = () => {
                 toast.success("Order submitted successfully! Check your email.");
                 setTimeout(() => navigate('/thank-you'), 1500);
             } else {
-                throw new Error(result.error || 'Failed to submit order');
+                // Combine main error with details if available
+                const errorMessage = result.details ? `${result.error}: ${result.details}` : (result.error || 'Failed to submit order');
+                throw new Error(errorMessage);
             }
         } catch (error) {
             console.error(error);
