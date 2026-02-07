@@ -16,6 +16,21 @@ const Checkout = () => {
         email: '',
         currency: ''
     });
+    const [showAddress, setShowAddress] = useState(false);
+
+    const getWalletAddress = (currency) => {
+        switch (currency) {
+            case 'BTC': return process.env.REACT_APP_BTC_WALLET;
+            case 'USDT_TRC20': return process.env.REACT_APP_USDT_TRC20_WALLET;
+            case 'ETH_ERC20': return process.env.REACT_APP_ETH_ERC20_WALLET;
+            default: return '';
+        }
+    };
+
+    const handleCopy = (text) => {
+        navigator.clipboard.writeText(text);
+        toast.success("Address copied to clipboard!");
+    };
 
     const handlePayment = (e) => {
         e.preventDefault();
@@ -107,10 +122,43 @@ const Checkout = () => {
                                 </div>
                             </div>
 
-                            <Button type="submit" className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-6 text-lg">
-                                <Wallet className="w-5 h-5 mr-2" />
-                                Pay with Crypto
-                            </Button>
+                            {!showAddress ? (
+                                <Button type="submit" className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-6 text-lg">
+                                    <Wallet className="w-5 h-5 mr-2" />
+                                    Proceed to Payment
+                                </Button>
+                            ) : (
+                                <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4">
+                                    <div className="bg-slate-950 border border-amber-500/30 rounded-lg p-4">
+                                        <div className="text-sm text-slate-400 mb-2">Send precisely <span className="text-white font-bold">$200</span> worth of {formData.currency} to:</div>
+                                        <div className="flex items-center gap-2 bg-slate-900 p-3 rounded border border-slate-700">
+                                            <code className="text-amber-400 text-sm break-all flex-1">
+                                                {getWalletAddress(formData.currency) || "Address not configured in .env"}
+                                            </code>
+                                            <Button
+                                                size="sm"
+                                                variant="ghost"
+                                                className="h-8 w-8 p-0"
+                                                onClick={() => handleCopy(getWalletAddress(formData.currency))}
+                                            >
+                                                <CheckCircle2 className="w-4 h-4" />
+                                            </Button>
+                                        </div>
+                                    </div>
+
+                                    <div className="text-center text-sm text-slate-400">
+                                        After payment, please send the transaction hash to support@example.com for activation.
+                                    </div>
+
+                                    <Button
+                                        variant="outline"
+                                        className="w-full border-slate-700 text-slate-400 hover:text-white hover:bg-slate-800"
+                                        onClick={() => setShowAddress(false)}
+                                    >
+                                        Back to details
+                                    </Button>
+                                </div>
+                            )}
                         </form>
                     </CardContent>
                 </Card>
