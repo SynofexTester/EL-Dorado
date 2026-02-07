@@ -47,7 +47,7 @@ const Buy = () => {
                             </div>
                             <div className="flex items-center gap-3 text-slate-300">
                                 <Shield className="w-5 h-5 text-green-500 shrink-0" />
-                                <span>Secure Payment via Stripe</span>
+                                <span>Secure Payment via Crypto</span>
                             </div>
                         </div>
 
@@ -60,7 +60,7 @@ const Buy = () => {
                         </Button>
 
                         <p className="text-center text-xs text-slate-500">
-                            Secured by Stripe. 30-day money-back guarantee.
+                            Secured by Blockchain. 30-day money-back guarantee.
                         </p>
                     </CardContent>
                 </Card>
